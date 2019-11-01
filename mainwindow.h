@@ -26,6 +26,11 @@ private slots:
 
     void on_actionBinary_triggered();
 
+    void on_actionHis_triggered();
+
+private:
+    void createBarView(float *serial,int size);
+
 private:
     SrcImageWidget *srcWidget;
     DstImageWidget *dstWidget;

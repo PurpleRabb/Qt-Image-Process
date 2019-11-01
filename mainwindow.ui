@@ -35,6 +35,7 @@
     </property>
     <addaction name="actionBinary"/>
     <addaction name="actionGray"/>
+    <addaction name="actionHis"/>
    </widget>
    <addaction name="openMenu"/>
    <addaction name="transMenu"/>
@@ -53,6 +54,11 @@
   <action name="actionGray">
    <property name="text">
     <string>黑白</string>
+   </property>
+  </action>
+  <action name="actionHis">
+   <property name="text">
+    <string>直方图</string>
    </property>
   </action>
  </widget>

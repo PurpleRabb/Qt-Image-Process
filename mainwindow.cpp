@@ -7,7 +7,16 @@
 #include <QTextEdit>
 #include <QSplitter>
 #include <QFileDialog>
+#include <QtCharts/QChartView>
+#include <QtCharts/QBarSeries>
+#include <QtCharts/QBarSet>
+#include <QtCharts/QLegend>
+#include <QtCharts/QBarCategoryAxis>
+#include <QtCharts/QValueAxis>
+
 #include "imagepro.h"
+
+QT_CHARTS_USE_NAMESPACE
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -76,6 +85,50 @@ void MainWindow::on_actionOpen_Image_triggered()
     }
 }
 
+void MainWindow::createBarView(float *serial,int size)
+{
+    QBarSet *set0 = new QBarSet("His");
+    set0->setColor(Qt::black);
+    QStringList categories;
+    for (int i=0;i<size;i++)
+    {
+        int value = serial[i]*1000;
+        *set0 << value;
+        categories << QString(i);
+        qDebug() << value;
+    }
+
+    QBarSeries *series = new QBarSeries();
+    series->append(set0);
+
+
+    QChart *chart = new QChart();
+    chart->addSeries(series);
+    chart->setTitle("Histogram barchart");
+    chart->setAnimationOptions(QChart::SeriesAnimations);
+
+    QBarCategoryAxis *axisX = new QBarCategoryAxis();
+    axisX->append(categories);
+    chart->addAxis(axisX, Qt::AlignBottom);
+    series->attachAxis(axisX);
+
+    QValueAxis *axisY = new QValueAxis();
+    axisY->setRange(0,1000);
+    chart->addAxis(axisY, Qt::AlignLeft);
+    series->attachAxis(axisY);
+
+
+    chart->legend()->setVisible(true);
+    chart->legend()->setAlignment(Qt::AlignBottom);
+
+
+    QChartView *chartView = new QChartView(chart);
+    chartView->setRenderHint(QPainter::Antialiasing);
+
+    chartView->resize(800, 300);
+    chartView->show();
+}
+
 void MainWindow::on_actionGray_triggered()
 {
     ImagePro::Instance()->doProcess(GRAY);
@@ -84,4 +137,10 @@ void MainWindow::on_actionGray_triggered()
 void MainWindow::on_actionBinary_triggered()
 {
      ImagePro::Instance()->doProcess(BINARY);
+}
+
+void MainWindow::on_actionHis_triggered()
+{
+    ImagePro::Instance()->doProcess(HISTOGRAM);
+    createBarView(ImagePro::Instance()->calHistogram(),256);
 }

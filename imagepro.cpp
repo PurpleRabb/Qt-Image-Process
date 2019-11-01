@@ -1,6 +1,7 @@
 #include "imagepro.h"
 #include <QFile>
 #include <QDebug>
+#include <QVector2D>
 
 ImagePro::ImagePro(QObject *parent) : QObject(parent)
 {
@@ -35,6 +36,11 @@ QImage *ImagePro::doProcess(Task t)
         break;
     case BINARY:
         toBinary();
+        break;
+    case HISTOGRAM:
+        calHistogram();
+        break;
+    default:
         break;
     }
 }
@@ -96,4 +102,43 @@ QImage* ImagePro::toBinary()
         }
     }
     emit showDst(dst);
+}
+
+float* ImagePro::calHistogram()
+{
+    if(src == nullptr)
+        return nullptr;
+    toGray();
+    if(histo == nullptr)
+        histo = new float[256];
+    memset(histo,0,256);
+    if(src)
+    {
+        QColor color;
+        for(int row=0;row<dst->height();row++)
+        {
+            for(int col=0;col<dst->width();col++)
+            {
+                color = dst->pixel(col,row);
+                histo[color.red()]++;
+            }
+        }
+    }
+    float max = 0.0;
+    float min = 0.0;
+    for(int i=0;i<256;i++)
+    {
+        if(histo[i] > max)
+            max = histo[i];
+        if(histo[i] < min)
+            min = histo[i];
+    }
+    qDebug() << max << min;
+    for(int i=0;i<256;i++)
+    {
+       histo[i] = histo[i]/(max-min);//normalize
+       if(histo[i] < 0)
+           histo[i] = 0;
+    }
+    return histo;
 }
