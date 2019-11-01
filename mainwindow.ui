@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>图像处理练习</string>
+  </property>
+  <widget class="QWidget" name="centralwidget"/>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="openMenu">
+    <property name="title">
+     <string>打开</string>
+    </property>
+    <addaction name="actionOpen_Image"/>
+   </widget>
+   <widget class="QMenu" name="transMenu">
+    <property name="title">
+     <string>变换</string>
+    </property>
+    <addaction name="actionBinary"/>
+    <addaction name="actionGray"/>
+   </widget>
+   <addaction name="openMenu"/>
+   <addaction name="transMenu"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionOpen_Image">
+   <property name="text">
+    <string>打开图片...</string>
+   </property>
+  </action>
+  <action name="actionBinary">
+   <property name="text">
+    <string>二值化</string>
+   </property>
+  </action>
+  <action name="actionGray">
+   <property name="text">
+    <string>黑白</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
