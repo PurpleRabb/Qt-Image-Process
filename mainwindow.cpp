@@ -90,12 +90,12 @@ void MainWindow::createBarView(float *serial,int size)
     QBarSet *set0 = new QBarSet("His");
     set0->setColor(Qt::black);
     QStringList categories;
+    volatile int value;
     for (int i=0;i<size;i++)
     {
-        int value = serial[i]*1000;
+        value = serial[i]*1000;
         *set0 << value;
         categories << QString(i);
-        qDebug() << value;
     }
 
     QBarSeries *series = new QBarSeries();

@@ -133,12 +133,12 @@ float* ImagePro::calHistogram()
         if(histo[i] < min)
             min = histo[i];
     }
-    qDebug() << max << min;
+    //qDebug() << max << min;
     for(int i=0;i<256;i++)
     {
-       histo[i] = histo[i]/(max-min);//normalize
+       histo[i] = (histo[i]-min)/(max-min);//normalize
        if(histo[i] < 0)
-           histo[i] = 0;
+           histo[i] = 0.0;
     }
     return histo;
 }
