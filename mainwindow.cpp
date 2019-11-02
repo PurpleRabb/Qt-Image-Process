@@ -87,13 +87,15 @@ void MainWindow::on_actionOpen_Image_triggered()
 
 void MainWindow::createBarView(float *serial,int size)
 {
-    QBarSet *set0 = new QBarSet("His");
+    if(serial == nullptr)
+        return;
+    QBarSet *set0 = new QBarSet("Histogram");
     set0->setColor(Qt::black);
     QStringList categories;
     volatile int value;
     for (int i=0;i<size;i++)
     {
-        value = serial[i]*1000;
+        value = static_cast<int>(serial[i]*1000);
         *set0 << value;
         categories << QString(i);
     }
@@ -141,6 +143,10 @@ void MainWindow::on_actionBinary_triggered()
 
 void MainWindow::on_actionHis_triggered()
 {
-    ImagePro::Instance()->doProcess(HISTOGRAM);
     createBarView(ImagePro::Instance()->calHistogram(),256);
+}
+
+void MainWindow::on_actionHistogram_Equalization_triggered()
+{
+    createBarView(ImagePro::Instance()->his_equal(),256);
 }

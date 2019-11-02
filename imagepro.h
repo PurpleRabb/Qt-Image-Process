@@ -10,7 +10,8 @@ class ImagePro;
 enum Task {
     GRAY,
     BINARY,
-    HISTOGRAM
+    HISTOGRAM,
+    HISTOGRAM_EQUAL,
 };
 
 class ImagePro : public QObject
@@ -34,10 +35,12 @@ public:
        return &IP;
     }
     float* calHistogram();
+    float* his_equal();
 
 private:
     QImage* toGray();
     QImage* toBinary();
+
 
 public slots:
 
