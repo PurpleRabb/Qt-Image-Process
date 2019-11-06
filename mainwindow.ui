@@ -37,6 +37,7 @@
     <addaction name="actionGray"/>
     <addaction name="actionHis"/>
     <addaction name="actionHistogram_Equalization"/>
+    <addaction name="actionGua"/>
    </widget>
    <addaction name="openMenu"/>
    <addaction name="transMenu"/>
@@ -65,6 +66,11 @@
   <action name="actionHistogram_Equalization">
    <property name="text">
     <string>直方图均衡化</string>
+   </property>
+  </action>
+  <action name="actionGua">
+   <property name="text">
+    <string>高斯模糊</string>
    </property>
   </action>
  </widget>

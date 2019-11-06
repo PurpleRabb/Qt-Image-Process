@@ -12,6 +12,7 @@ enum Task {
     BINARY,
     HISTOGRAM,
     HISTOGRAM_EQUAL,
+    GAUSSIAN_BLUR
 };
 
 class ImagePro : public QObject
@@ -21,6 +22,7 @@ class ImagePro : public QObject
 signals:
     void showSrc(QImage *);
     void showDst(QImage *);
+    void disableUpdate(bool);
 
 private:
     explicit ImagePro(QObject *parent = nullptr);
@@ -40,6 +42,7 @@ public:
 private:
     QImage* toGray();
     QImage* toBinary();
+    QImage* gaussian_blur();
 
 
 public slots:

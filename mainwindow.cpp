@@ -44,6 +44,7 @@ MainWindow::MainWindow(QWidget *parent)
 //    file.close();
     connect(ImagePro::Instance(),SIGNAL(showSrc(QImage *)),srcWidget,SLOT(showPic(QImage *)));
     connect(ImagePro::Instance(),SIGNAL(showDst(QImage *)),dstWidget,SLOT(showPic(QImage *)));
+    connect(ImagePro::Instance(),SIGNAL(disableUpdate(bool)),dstWidget,SLOT(disableUpdate(bool)));
 }
 
 MainWindow::~MainWindow()
@@ -149,4 +150,9 @@ void MainWindow::on_actionHis_triggered()
 void MainWindow::on_actionHistogram_Equalization_triggered()
 {
     createBarView(ImagePro::Instance()->his_equal(),256);
+}
+
+void MainWindow::on_actionGua_triggered()
+{
+    ImagePro::Instance()->doProcess(GAUSSIAN_BLUR);
 }

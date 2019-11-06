@@ -11,20 +11,33 @@ ImagePro::ImagePro(QObject *parent) : QObject(parent)
 bool ImagePro::setPic(QString &filename)
 {
     QFile file(filename);
-    if (!file.open(QIODevice::ReadOnly)) {
+    if (!file.open(QIODevice::ReadOnly))
+    {
         return false;
     }
 
     if(file.exists()) {
-        src = new QImage(filename);
-        dst = new QImage(*src);
+        if(src == nullptr)
+        {
+            src = new QImage(filename);
+            dst = new QImage(*src);
+        }
+        else
+        {
+            src->load(filename);
+            emit disableUpdate(true);//不让dst跟着刷新
+            dst->load(filename);
+        }
         qDebug() << src->width() << src->height();
+        qDebug() << dst->width() << dst->height();
         if(src != nullptr)
         {
             emit showSrc(src);
+            qDebug() << "show src";
             return true;
         }
     }
+    file.close();
     return false;
 }
 
@@ -44,6 +57,9 @@ QImage *ImagePro::doProcess(Task t)
     case HISTOGRAM_EQUAL:
         his_equal();
         break;
+    case GAUSSIAN_BLUR:
+        gaussian_blur();
+        break;
     }
     return dst;
 }
@@ -52,6 +68,8 @@ ImagePro::~ImagePro()
 {
     if(src)
         delete src;
+    if(dst)
+        delete dst;
     qDebug() << "~ImageProc";
 }
 
@@ -106,6 +124,54 @@ QImage* ImagePro::toBinary()
     return dst;
 }
 
+QImage *ImagePro::gaussian_blur()
+{
+    /*采用7*7的高斯模板进行卷积*/
+    static const int TEMPLATE_SIZE = 7;
+    static const double gaussianTemplate[TEMPLATE_SIZE][TEMPLATE_SIZE] =
+    {
+        {0.00000067, 0.00002292, 0.00019117, 0.00038771, 0.00019117, 0.00002292, 0.00000067},
+        {0.00002292, 0.00078633, 0.00655965, 0.01330373, 0.00655965, 0.00078633, 0.00002292},
+        {0.00019117, 0.00655965, 0.05472157, 0.11098164, 0.05472157, 0.00655965, 0.00019117},
+        {0.00038771, 0.01330373, 0.11098164, 0.22508352, 0.11098164, 0.01330373, 0.00038771},
+        {0.00019117, 0.00655965, 0.05472157, 0.11098164, 0.05472157, 0.00655965, 0.00019117},
+        {0.00002292, 0.00078633, 0.00655965, 0.01330373, 0.00655965, 0.00078633, 0.00002292},
+        {0.00000067, 0.00002292, 0.00019117, 0.00038771, 0.00019117, 0.00002292, 0.00000067}
+    };
+
+    if(src == nullptr)
+        return nullptr;
+    int width = src->width();
+    int height = src->height();
+    QRgb rgb;
+    for(int row=TEMPLATE_SIZE/2;row<height;row++)
+    {
+        for(int col=TEMPLATE_SIZE/2;col<width;col++)
+        {
+            int t_red = 0;
+            int t_green = 0;
+            int t_blue = 0;
+            for(int i=0;i<TEMPLATE_SIZE;i++)
+            {
+                for(int j=0;j<TEMPLATE_SIZE;j++)
+                {
+                    if(((col+j-TEMPLATE_SIZE/2)>=width) || ((row+i-TEMPLATE_SIZE/2) >= height))
+                    {
+                        continue;
+                    }
+                    rgb = src->pixel(col+j-TEMPLATE_SIZE/2,row+i-TEMPLATE_SIZE/2);
+                    t_red += gaussianTemplate[i][j] * qRed(rgb);
+                    t_green += gaussianTemplate[i][j] * qGreen(rgb);
+                    t_blue += gaussianTemplate[i][j] * qBlue(rgb);
+                }
+            }
+            dst->setPixel(col,row,qRgb(t_red,t_green,t_blue));
+        }
+    }
+    emit showDst(dst);
+    return dst;
+}
+
 float* ImagePro::calHistogram()
 {
     if(src == nullptr)
@@ -138,7 +204,7 @@ float* ImagePro::calHistogram()
     for(int i=0;i<256;i++)
     {
        histo[i] = (histo[i]-min)/(max-min);//normalize
-       if(histo[i] < 0)
+       if(histo[i] < 0.001)
        {
            histo[i] = 0.0;
        }
@@ -226,7 +292,7 @@ float *ImagePro::his_equal()
     for(int i=0;i<256;i++)
     {
        histo[i] = (histo[i]/size)*100;//normalize
-       if(histo[i] < 0)
+       if(histo[i] < 0.001)
        {
            histo[i] = 0.0;
        }

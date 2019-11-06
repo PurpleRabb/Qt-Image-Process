@@ -20,10 +20,12 @@ public:
 
 private slots:
     void showPic(QImage *src);
+    void disableUpdate(bool _update);
 
 private:
     Ui::DstImageWidget *ui;
     QImage *dst = nullptr;
+    bool _update = true;
 };
 
 #endif // DSTIMAGEWIDGET_H

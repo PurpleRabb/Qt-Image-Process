@@ -30,6 +30,8 @@ private slots:
 
     void on_actionHistogram_Equalization_triggered();
 
+    void on_actionGua_triggered();
+
 private:
     void createBarView(float *serial,int size);
 

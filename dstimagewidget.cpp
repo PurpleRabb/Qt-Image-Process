@@ -17,6 +17,9 @@ DstImageWidget::~DstImageWidget()
 
 void DstImageWidget::paintEvent(QPaintEvent *event)
 {
+    if(!_update)
+        return;
+    //qDebug() << "dst paintEvent";
     if(dst)
     {
         QPainter painter;
@@ -30,5 +33,11 @@ void DstImageWidget::paintEvent(QPaintEvent *event)
 void DstImageWidget::showPic(QImage *p)
 {
     dst = p;
+    _update = true;
     repaint();
+}
+
+void DstImageWidget::disableUpdate(bool _update)
+{
+    this->_update = !_update;
 }
