@@ -156,3 +156,23 @@ void MainWindow::on_actionGua_triggered()
 {
     ImagePro::Instance()->doProcess(GAUSSIAN_BLUR);
 }
+
+void MainWindow::on_actionsobel_triggered()
+{
+    ImagePro::Instance()->doProcess(SOBEL);
+}
+
+void MainWindow::on_horizontal_triggered()
+{
+    ImagePro::Instance()->doProcess(H_SHARPEN);
+}
+
+void MainWindow::on_vertical_triggered()
+{
+    ImagePro::Instance()->doProcess(V_SHARPEN);
+}
+
+void MainWindow::on_actiondual_triggered()
+{
+    ImagePro::Instance()->doProcess(DUAL_SHARPEN);
+}

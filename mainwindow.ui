@@ -39,8 +39,23 @@
     <addaction name="actionHistogram_Equalization"/>
     <addaction name="actionGua"/>
    </widget>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>锐化</string>
+    </property>
+    <widget class="QMenu" name="menu_2">
+     <property name="title">
+      <string>一阶微分锐化</string>
+     </property>
+     <addaction name="horizontal"/>
+     <addaction name="vertical"/>
+     <addaction name="actiondual"/>
+    </widget>
+    <addaction name="menu_2"/>
+   </widget>
    <addaction name="openMenu"/>
    <addaction name="transMenu"/>
+   <addaction name="menu"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionOpen_Image">
@@ -71,6 +86,26 @@
   <action name="actionGua">
    <property name="text">
     <string>高斯模糊</string>
+   </property>
+  </action>
+  <action name="actionsobel">
+   <property name="text">
+    <string>sobel</string>
+   </property>
+  </action>
+  <action name="horizontal">
+   <property name="text">
+    <string>水平</string>
+   </property>
+  </action>
+  <action name="vertical">
+   <property name="text">
+    <string>垂直</string>
+   </property>
+  </action>
+  <action name="actiondual">
+   <property name="text">
+    <string>双向</string>
    </property>
   </action>
  </widget>

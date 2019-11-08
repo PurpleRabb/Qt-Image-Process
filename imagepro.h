@@ -12,7 +12,11 @@ enum Task {
     BINARY,
     HISTOGRAM,
     HISTOGRAM_EQUAL,
-    GAUSSIAN_BLUR
+    GAUSSIAN_BLUR,
+    H_SHARPEN,
+    V_SHARPEN,
+    DUAL_SHARPEN,
+    SOBEL,
 };
 
 class ImagePro : public QObject
@@ -43,6 +47,11 @@ private:
     QImage* toGray();
     QImage* toBinary();
     QImage* gaussian_blur();
+    QImage* h_sharpen();
+    QImage* v_sharpen();
+    QImage* sobel();
+    QImage* dual_sharpen();
+
 
 
 public slots:

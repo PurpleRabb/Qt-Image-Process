@@ -2,6 +2,7 @@
 #include <QFile>
 #include <QDebug>
 #include <QVector2D>
+#include <QtMath>
 
 ImagePro::ImagePro(QObject *parent) : QObject(parent)
 {
@@ -59,6 +60,18 @@ QImage *ImagePro::doProcess(Task t)
         break;
     case GAUSSIAN_BLUR:
         gaussian_blur();
+        break;
+    case H_SHARPEN:
+        h_sharpen();
+        break;
+    case V_SHARPEN:
+        v_sharpen();
+        break;
+    case SOBEL:
+        sobel();
+        break;
+    case DUAL_SHARPEN:
+        dual_sharpen();
         break;
     }
     return dst;
@@ -169,6 +182,93 @@ QImage *ImagePro::gaussian_blur()
         }
     }
     emit showDst(dst);
+    return dst;
+}
+
+QImage* ImagePro::h_sharpen()
+{
+    /***********************************
+     * 水平边缘检测:
+     *      g(x,y)=|f(x,y) - f(x-1,y)|
+    ************************************/
+    if(src == nullptr)
+        return nullptr;
+    int width = src->width();
+    int height = src->height();
+    QRgb rgb;
+    QImage temp(*dst);
+    toGray();
+    temp.fill(QColor(255,255,255));
+    for(int row=1;row<height;row++)
+    {
+        for(int col=1;col<width;col++)
+        {
+            rgb = qAbs(dst->pixel(col,row) - dst->pixel(col-1,row));
+            temp.setPixel(col,row,rgb);
+        }
+    }
+    *dst = temp.copy(temp.rect());
+    emit showDst(dst);
+    return dst;
+}
+
+QImage* ImagePro::v_sharpen()
+{
+    /***********************************
+     * 垂直边缘检测:
+     *      g(x,y)=|f(x,y) - f(x,y-1)|
+    ************************************/
+    if(src == nullptr)
+        return nullptr;
+    int width = src->width();
+    int height = src->height();
+    QRgb rgb;
+    QImage temp(*dst);
+    toGray();
+    temp.fill(QColor(255,255,255));
+    for(int row=1;row<height;row++)
+    {
+        for(int col=1;col<width;col++)
+        {
+            rgb = qAbs(dst->pixel(col,row) - dst->pixel(col,row-1));
+            temp.setPixel(col,row,rgb);
+        }
+    }
+    *dst = temp.copy(temp.rect());
+    emit showDst(dst);
+    return dst;
+}
+
+QImage* ImagePro::dual_sharpen()
+{
+    /***********************************
+     * 双向边缘检测:
+     *      g(x,y)=sqt[(f(x,y) - f(x-1,y))^2 + (f(x,y) - f(x,y-1))^2]
+    ************************************/
+    if(src == nullptr)
+        return nullptr;
+    int width = src->width();
+    int height = src->height();
+    QImage temp(*dst);
+    toGray();
+    temp.fill(QColor(255,255,255));
+    for(int row=1;row<height;row++)
+    {
+        for(int col=1;col<width;col++)
+        {
+            int delta_x = qRed(dst->pixel(col,row)) - qRed(dst->pixel(col-1,row));
+            int delta_y = qRed(dst->pixel(col,row)) - qRed(dst->pixel(col,row-1));
+            int delta = qCeil(qSqrt(delta_x*delta_x+delta_y*delta_y));
+            temp.setPixelColor(col,row,QColor(delta,delta,delta));
+        }
+    }
+    *dst = temp.copy(temp.rect());
+    emit showDst(dst);
+    return dst;
+}
+
+QImage* ImagePro::sobel()
+{
     return dst;
 }
 

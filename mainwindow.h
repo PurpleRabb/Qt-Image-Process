@@ -32,6 +32,14 @@ private slots:
 
     void on_actionGua_triggered();
 
+    void on_actionsobel_triggered();
+
+    void on_horizontal_triggered();
+
+    void on_vertical_triggered();
+
+    void on_actiondual_triggered();
+
 private:
     void createBarView(float *serial,int size);
 
