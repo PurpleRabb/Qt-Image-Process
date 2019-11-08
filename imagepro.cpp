@@ -259,6 +259,7 @@ QImage* ImagePro::dual_sharpen()
             int delta_x = qRed(dst->pixel(col,row)) - qRed(dst->pixel(col-1,row));
             int delta_y = qRed(dst->pixel(col,row)) - qRed(dst->pixel(col,row-1));
             int delta = qCeil(qSqrt(delta_x*delta_x+delta_y*delta_y));
+            delta = qBound(0,delta,255);
             temp.setPixelColor(col,row,QColor(delta,delta,delta));
         }
     }
@@ -272,13 +273,13 @@ QImage* ImagePro::sobel()
     return dst;
 }
 
-float* ImagePro::calHistogram()
+double* ImagePro::calHistogram()
 {
     if(src == nullptr)
         return nullptr;
     toGray();
     if(histo == nullptr)
-        histo = new float[256];
+        histo = new double[256];
     memset(histo,0,256);
 
     QColor color;
@@ -291,8 +292,8 @@ float* ImagePro::calHistogram()
         }
     }
 
-    float max = 0.0;
-    float min = 0.0;
+    double max = 0;
+    double min = 0;
     for(int i=0;i<256;i++)
     {
         if(histo[i] > max)
@@ -313,13 +314,13 @@ float* ImagePro::calHistogram()
     return histo;
 }
 
-float *ImagePro::his_equal()
+double *ImagePro::his_equal()
 {
     if(src == nullptr)
         return nullptr;
     toGray();
     if(histo == nullptr)
-        histo = new float[256];
+        histo = new double[256];
     memset(histo,0,256);
     /************************
       算法步骤：
@@ -350,7 +351,7 @@ float *ImagePro::his_equal()
     }
 //[1]
 //[2]
-    float cdf[255] = {0};
+    double cdf[255] = {0};
     cdf[0] = histo[0];
     for(int i=1;i<256;i++)
     {
@@ -371,9 +372,9 @@ float *ImagePro::his_equal()
     {
         for(int col=0;col<dst->width();col++)
         {
-            color = dst->pixel(col,row);
-            color.setRgb(gray_table_equal[color.red()],gray_table_equal[color.red()],gray_table_equal[color.red()]);
-            dst->setPixel(col,row,color.rgb());
+            QRgb rgb = dst->pixel(col,row);
+            int gray = qBound(0,gray_table_equal[qRed(rgb)],255);
+            dst->setPixel(col,row,qRgb(gray,gray,gray));
         }
     }
     //[4]

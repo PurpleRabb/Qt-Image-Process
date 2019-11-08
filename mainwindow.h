@@ -41,7 +41,7 @@ private slots:
     void on_actiondual_triggered();
 
 private:
-    void createBarView(float *serial,int size);
+    void createBarView(double *serial,int size);
 
 private:
     SrcImageWidget *srcWidget;

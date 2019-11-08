@@ -86,7 +86,7 @@ void MainWindow::on_actionOpen_Image_triggered()
     }
 }
 
-void MainWindow::createBarView(float *serial,int size)
+void MainWindow::createBarView(double *serial,int size)
 {
     if(serial == nullptr)
         return;

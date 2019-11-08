@@ -40,8 +40,8 @@ public:
        static ImagePro IP;
        return &IP;
     }
-    float* calHistogram();
-    float* his_equal();
+    double* calHistogram();
+    double* his_equal();
 
 private:
     QImage* toGray();
@@ -59,7 +59,7 @@ public slots:
 private:
     QImage *src = nullptr;
     QImage *dst = nullptr;
-    float *histo = nullptr;
+    double *histo = nullptr;
 };
 
 #endif // IMAGEPRO_H
