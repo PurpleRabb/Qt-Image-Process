@@ -273,7 +273,7 @@ QImage* ImagePro::dual_sharpen()
     return dst;
 }
 
-QImage* ImagePro::sobel()
+QImage* ImagePro::sobel(bool enhanced)
 {
     /*******************************
      *   [-1,0,1]      [-1,-2,-1]
@@ -284,6 +284,7 @@ QImage* ImagePro::sobel()
      *
      * 注意：目标图像保存的是图片的变化率，也就是梯度
     *******************************/
+    //bool enhanced = false; //针对原图还是灰度图
     static const int X_TEMPLATE_SIZE = 3;
     static const int Y_TEMPLATE_SIZE = 3;
     static int sobel_x[X_TEMPLATE_SIZE][X_TEMPLATE_SIZE] =
@@ -304,7 +305,8 @@ QImage* ImagePro::sobel()
     int height = src->height();
     QImage temp(*dst);
     toGray();
-    temp.fill(QColor(0,0,0));
+    if(!enhanced)
+        temp.fill(QColor(0,0,0));
     for(int row=X_TEMPLATE_SIZE/2;row<height;row++)
     {
         for(int col=Y_TEMPLATE_SIZE/2;col<width;col++)
@@ -326,7 +328,21 @@ QImage* ImagePro::sobel()
             }
             int delta = qCeil(qSqrt(delta_x*delta_x+delta_y*delta_y));
             delta = qBound(0,delta,255);
-            temp.setPixelColor(col,row,QColor(delta,delta,delta));
+            if(enhanced)
+            {
+                if(delta > 100)
+                {
+                    QRgb rgb = temp.pixel(col,row);
+                    int red = qRed(rgb) + 100;
+                    int green = qGreen(rgb) + 100;
+                    int blue = qBlue(rgb) + 100;
+                    temp.setPixelColor(col,row,qRgb(red,green,blue));
+                }
+            }
+            else
+            {
+                temp.setPixelColor(col,row,QColor(delta,delta,delta));
+            }
         }
     }
     *dst = temp.copy(temp.rect());

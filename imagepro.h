@@ -49,7 +49,7 @@ private:
     QImage* gaussian_blur();
     QImage* h_sharpen();
     QImage* v_sharpen();
-    QImage* sobel();
+    QImage* sobel(bool enhanced = false);
     QImage* dual_sharpen();
 
 
