@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "m_dialog.h"
 #include <QPainter>
 #include <QDebug>
 #include <QFile>
@@ -159,7 +160,8 @@ void MainWindow::on_actionGua_triggered()
 
 void MainWindow::on_actionsobel_triggered()
 {
-    ImagePro::Instance()->doProcess(SOBEL);
+    M_Dialog md;
+    ImagePro::Instance()->doProcess(SOBEL,md.exec());
 }
 
 void MainWindow::on_horizontal_triggered()

@@ -34,7 +34,7 @@ private:
 
 public:
     bool setPic(QString &filename);
-    QImage *doProcess(Task t);
+    QImage *doProcess(Task t,bool flag=false);
     static ImagePro *Instance()
     {
        static ImagePro IP;

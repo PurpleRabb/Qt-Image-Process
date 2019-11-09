@@ -18,6 +18,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     dstimagewidget.cpp \
     imagepro.cpp \
+    m_dialog.cpp \
     main.cpp \
     mainwindow.cpp \
     srcimagewidget.cpp
@@ -25,11 +26,13 @@ SOURCES += \
 HEADERS += \
     dstimagewidget.h \
     imagepro.h \
+    m_dialog.h \
     mainwindow.h \
     srcimagewidget.h
 
 FORMS += \
     dstimagewidget.ui \
+    m_dialog.ui \
     mainwindow.ui \
     srcimagewidget.ui
 

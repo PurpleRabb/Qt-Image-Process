@@ -42,7 +42,7 @@ bool ImagePro::setPic(QString &filename)
     return false;
 }
 
-QImage *ImagePro::doProcess(Task t)
+QImage *ImagePro::doProcess(Task t,bool flag)
 {
     switch (t)
     {
@@ -68,7 +68,7 @@ QImage *ImagePro::doProcess(Task t)
         v_sharpen();
         break;
     case SOBEL:
-        sobel();
+        sobel(flag);
         break;
     case DUAL_SHARPEN:
         dual_sharpen();
