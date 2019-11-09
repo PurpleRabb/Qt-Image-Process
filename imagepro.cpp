@@ -190,6 +190,7 @@ QImage* ImagePro::h_sharpen()
     /***********************************
      * 水平边缘检测:
      *      g(x,y)=|f(x,y) - f(x-1,y)|
+     * 相当于模板[-1,1]
     ************************************/
     if(src == nullptr)
         return nullptr;
@@ -217,6 +218,8 @@ QImage* ImagePro::v_sharpen()
     /***********************************
      * 垂直边缘检测:
      *      g(x,y)=|f(x,y) - f(x,y-1)|
+     * 相当于模板[-1
+     *          ,1]
     ************************************/
     if(src == nullptr)
         return nullptr;
@@ -243,7 +246,9 @@ QImage* ImagePro::dual_sharpen()
 {
     /***********************************
      * 双向边缘检测:
-     *      g(x,y)=sqt[(f(x,y) - f(x-1,y))^2 + (f(x,y) - f(x,y-1))^2]
+     *      利用最简单的算子[-1,1]计算梯度
+     * 梯度：G(x,y)=sqt[(f(x,y) - f(x-1,y))^2 + (f(x,y) - f(x,y-1))^2]
+     * 注意：目标图像保存的是图片的变化率，也就是梯度
     ************************************/
     if(src == nullptr)
         return nullptr;
@@ -270,6 +275,62 @@ QImage* ImagePro::dual_sharpen()
 
 QImage* ImagePro::sobel()
 {
+    /*******************************
+     *   [-1,0,1]      [-1,-2,-1]
+     * x=[-2,0,1]    y=[ 0, 0, 0]
+     *   [-1,0,1]      [ 1, 2, 1]
+     *
+     * 梯度：G(x,y) = sqrt(x^2+y^2)
+     *
+     * 注意：目标图像保存的是图片的变化率，也就是梯度
+    *******************************/
+    static const int X_TEMPLATE_SIZE = 3;
+    static const int Y_TEMPLATE_SIZE = 3;
+    static int sobel_x[X_TEMPLATE_SIZE][X_TEMPLATE_SIZE] =
+    {
+        {-1,-2,-1},
+        { 0, 0, 0},
+        { 1, 2, 1}
+    };
+    static int sobel_y[Y_TEMPLATE_SIZE][Y_TEMPLATE_SIZE] =
+    {
+        {-1, 0, 1},
+        {-2, 0, 2},
+        {-1, 0, 1}
+    };
+    if(src == nullptr)
+        return nullptr;
+    int width = src->width();
+    int height = src->height();
+    QImage temp(*dst);
+    toGray();
+    temp.fill(QColor(0,0,0));
+    for(int row=X_TEMPLATE_SIZE/2;row<height;row++)
+    {
+        for(int col=Y_TEMPLATE_SIZE/2;col<width;col++)
+        {
+            int delta_x = 0;
+            int delta_y = 0;
+            //X方向卷积计算
+            for(int i=0;i<X_TEMPLATE_SIZE;i++)
+            {
+                for(int j=0;j<Y_TEMPLATE_SIZE;j++)
+                {
+                    if(((col+j-X_TEMPLATE_SIZE/2)>=width) || ((row+i-Y_TEMPLATE_SIZE/2) >= height))
+                    {
+                        continue;
+                    }
+                    delta_x += qRed(src->pixel(col+j-X_TEMPLATE_SIZE/2,row+i-Y_TEMPLATE_SIZE/2)) * sobel_x[i][j];
+                    delta_y += qRed(src->pixel(col+j-X_TEMPLATE_SIZE/2,row+i-Y_TEMPLATE_SIZE/2)) * sobel_y[i][j];
+                }
+            }
+            int delta = qCeil(qSqrt(delta_x*delta_x+delta_y*delta_y));
+            delta = qBound(0,delta,255);
+            temp.setPixelColor(col,row,QColor(delta,delta,delta));
+        }
+    }
+    *dst = temp.copy(temp.rect());
+    emit showDst(dst);
     return dst;
 }
 

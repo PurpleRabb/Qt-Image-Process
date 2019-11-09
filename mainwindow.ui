@@ -52,6 +52,7 @@
      <addaction name="actiondual"/>
     </widget>
     <addaction name="menu_2"/>
+    <addaction name="actionsobel"/>
    </widget>
    <addaction name="openMenu"/>
    <addaction name="transMenu"/>
@@ -88,11 +89,6 @@
     <string>高斯模糊</string>
    </property>
   </action>
-  <action name="actionsobel">
-   <property name="text">
-    <string>sobel</string>
-   </property>
-  </action>
   <action name="horizontal">
    <property name="text">
     <string>水平</string>
@@ -106,6 +102,11 @@
   <action name="actiondual">
    <property name="text">
     <string>双向</string>
+   </property>
+  </action>
+  <action name="actionsobel">
+   <property name="text">
+    <string>sobel算子</string>
    </property>
   </action>
  </widget>
