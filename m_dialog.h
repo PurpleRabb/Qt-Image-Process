@@ -15,6 +15,7 @@ class M_Dialog : public QDialog
 public:
     explicit M_Dialog(QWidget *parent = nullptr);
     ~M_Dialog();
+    int getValue();
 
 private slots:
     void on_buttonBox_clicked(QAbstractButton *button);

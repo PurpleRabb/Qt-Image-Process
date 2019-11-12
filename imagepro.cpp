@@ -42,7 +42,7 @@ bool ImagePro::setPic(QString &filename)
     return false;
 }
 
-QImage *ImagePro::doProcess(Task t,bool flag)
+QImage *ImagePro::doProcess(Task t,bool flag,int value)
 {
     switch (t)
     {
@@ -50,7 +50,7 @@ QImage *ImagePro::doProcess(Task t,bool flag)
         toGray();
         break;
     case BINARY:
-        toBinary();
+        toBinary(value);
         break;
     case HISTOGRAM:
         calHistogram();
@@ -111,7 +111,7 @@ QImage* ImagePro::toGray()
     return dst;
 }
 
-QImage* ImagePro::toBinary()
+QImage* ImagePro::toBinary(int threshold)
 {
     if(src == nullptr)
         return nullptr;
@@ -122,7 +122,7 @@ QImage* ImagePro::toBinary()
         {
             color = src->pixel(col,row);
             int mean = (color.red() + color.green() + color.blue())/3;
-            if(mean > 100)
+            if(mean > threshold)
             {
                 color.setRgb(255,255,255);
             }

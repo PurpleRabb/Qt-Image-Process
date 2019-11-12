@@ -34,7 +34,7 @@ private:
 
 public:
     bool setPic(QString &filename);
-    QImage *doProcess(Task t,bool flag=false);
+    QImage *doProcess(Task t,bool flag=false,int value=100);
     static ImagePro *Instance()
     {
        static ImagePro IP;
@@ -45,7 +45,7 @@ public:
 
 private:
     QImage* toGray();
-    QImage* toBinary();
+    QImage* toBinary(int threshold=100);
     QImage* gaussian_blur();
     QImage* h_sharpen();
     QImage* v_sharpen();

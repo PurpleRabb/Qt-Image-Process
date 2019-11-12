@@ -54,9 +54,17 @@
     <addaction name="menu_2"/>
     <addaction name="actionsobel"/>
    </widget>
+   <widget class="QMenu" name="menu_3">
+    <property name="title">
+     <string>形态学</string>
+    </property>
+    <addaction name="actionfushi"/>
+    <addaction name="actionpengzhang"/>
+   </widget>
    <addaction name="openMenu"/>
    <addaction name="transMenu"/>
    <addaction name="menu"/>
+   <addaction name="menu_3"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionOpen_Image">
@@ -107,6 +115,16 @@
   <action name="actionsobel">
    <property name="text">
     <string>sobel算子</string>
+   </property>
+  </action>
+  <action name="actionfushi">
+   <property name="text">
+    <string>腐蚀</string>
+   </property>
+  </action>
+  <action name="actionpengzhang">
+   <property name="text">
+    <string>膨胀</string>
    </property>
   </action>
  </widget>

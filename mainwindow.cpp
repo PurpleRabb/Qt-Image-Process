@@ -140,7 +140,9 @@ void MainWindow::on_actionGray_triggered()
 
 void MainWindow::on_actionBinary_triggered()
 {
-     ImagePro::Instance()->doProcess(BINARY);
+     M_Dialog md;
+     md.exec();
+     ImagePro::Instance()->doProcess(BINARY,false,md.getValue());
 }
 
 void MainWindow::on_actionHis_triggered()
