@@ -140,7 +140,7 @@ void MainWindow::on_actionGray_triggered()
 
 void MainWindow::on_actionBinary_triggered()
 {
-     M_Dialog md;
+     M_Dialog md(this,false,true);
      md.exec();
      ImagePro::Instance()->doProcess(BINARY,false,md.getValue());
 }
@@ -162,7 +162,7 @@ void MainWindow::on_actionGua_triggered()
 
 void MainWindow::on_actionsobel_triggered()
 {
-    M_Dialog md;
+    M_Dialog md(this,true,false);
     ImagePro::Instance()->doProcess(SOBEL,md.exec());
 }
 

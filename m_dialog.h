@@ -13,7 +13,7 @@ class M_Dialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit M_Dialog(QWidget *parent = nullptr);
+    explicit M_Dialog(QWidget *parent = nullptr,bool buttonshow=true,bool inputshow=true);
     ~M_Dialog();
     int getValue();
 
