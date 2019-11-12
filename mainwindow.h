@@ -40,6 +40,8 @@ private slots:
 
     void on_actiondual_triggered();
 
+    void on_actionswitch_triggered();
+
 private:
     void createBarView(double *serial,int size);
 

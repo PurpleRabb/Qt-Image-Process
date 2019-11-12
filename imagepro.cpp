@@ -477,3 +477,12 @@ double *ImagePro::his_equal()
     }
     return histo;
 }
+
+void ImagePro::swap()
+{
+    if(src != nullptr)
+    {
+        *src = dst->copy(dst->rect());
+        emit showSrc(src);
+    }
+}

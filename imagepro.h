@@ -42,6 +42,7 @@ public:
     }
     double* calHistogram();
     double* his_equal();
+    void swap();
 
 private:
     QImage* toGray();

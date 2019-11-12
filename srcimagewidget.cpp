@@ -32,5 +32,5 @@ void SrcImageWidget::paintEvent(QPaintEvent *event)
 void SrcImageWidget::showPic(QImage *p)
 {
     src = p;
-    //qDebug() << "show####" << p->width();
+    update();
 }

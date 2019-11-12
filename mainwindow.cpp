@@ -180,3 +180,8 @@ void MainWindow::on_actiondual_triggered()
 {
     ImagePro::Instance()->doProcess(DUAL_SHARPEN);
 }
+
+void MainWindow::on_actionswitch_triggered()
+{
+    ImagePro::Instance()->swap();
+}
