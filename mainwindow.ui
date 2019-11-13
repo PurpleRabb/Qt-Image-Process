@@ -38,6 +38,7 @@
     <addaction name="actionHis"/>
     <addaction name="actionHistogram_Equalization"/>
     <addaction name="actionGua"/>
+    <addaction name="actionmid"/>
    </widget>
    <widget class="QMenu" name="menu">
     <property name="title">
@@ -142,6 +143,11 @@
   <action name="actionswitch">
    <property name="text">
     <string>swap</string>
+   </property>
+  </action>
+  <action name="actionmid">
+   <property name="text">
+    <string>中值滤波</string>
    </property>
   </action>
  </widget>

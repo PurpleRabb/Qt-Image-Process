@@ -17,6 +17,7 @@ enum Task {
     V_SHARPEN,
     DUAL_SHARPEN,
     SOBEL,
+    MED_FILTER
 };
 
 class ImagePro : public QObject
@@ -52,7 +53,7 @@ private:
     QImage* v_sharpen();
     QImage* sobel(bool enhanced = false);
     QImage* dual_sharpen();
-
+    QImage* med_filter();
 
 
 public slots:

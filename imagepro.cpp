@@ -3,6 +3,7 @@
 #include <QDebug>
 #include <QVector2D>
 #include <QtMath>
+#include <algorithm>
 
 ImagePro::ImagePro(QObject *parent) : QObject(parent)
 {
@@ -72,6 +73,9 @@ QImage *ImagePro::doProcess(Task t,bool flag,int value)
         break;
     case DUAL_SHARPEN:
         dual_sharpen();
+        break;
+    case MED_FILTER:
+        med_filter();
         break;
     }
     return dst;
@@ -476,6 +480,44 @@ double *ImagePro::his_equal()
        }
     }
     return histo;
+}
+
+QImage* ImagePro::med_filter()
+{
+    /***********************
+     * 取目标像素的八邻域排序, *
+     * 取中间值替代目标像素    *
+    ************************/
+    if(src == nullptr)
+        return nullptr;
+    int width = src->width();
+    int height = src->height();
+    int TEMPLATE_SIZE = 3;
+    int mid = TEMPLATE_SIZE * TEMPLATE_SIZE / 2;
+    int total_num = TEMPLATE_SIZE * TEMPLATE_SIZE;
+    QRgb num9_temp[9] = {0};
+    for(int row=TEMPLATE_SIZE/2;row<height;row++)
+    {
+        for(int col=TEMPLATE_SIZE/2;col<width;col++)
+        {
+            int numsize = 0;
+            for(int i=0;i<TEMPLATE_SIZE;i++)
+            {
+                for(int j=0;j<TEMPLATE_SIZE;j++)
+                {
+                    if(((col+j-TEMPLATE_SIZE/2)>=width) || ((row+i-TEMPLATE_SIZE/2) >= height))
+                    {
+                        continue;
+                    }
+                    num9_temp[numsize++] = src->pixel(col+j-TEMPLATE_SIZE/2,row+i-TEMPLATE_SIZE/2);
+                    std::sort(num9_temp,num9_temp+total_num);//排序
+                }
+            }
+            dst->setPixel(col,row,num9_temp[mid]);//取中间值
+        }
+    }
+    emit showDst(dst);
+    return dst;
 }
 
 void ImagePro::swap()

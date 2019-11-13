@@ -181,6 +181,11 @@ void MainWindow::on_actiondual_triggered()
     ImagePro::Instance()->doProcess(DUAL_SHARPEN);
 }
 
+void MainWindow::on_actionmid_triggered()
+{
+     ImagePro::Instance()->doProcess(MED_FILTER);
+}
+
 void MainWindow::on_actionswitch_triggered()
 {
     ImagePro::Instance()->swap();
