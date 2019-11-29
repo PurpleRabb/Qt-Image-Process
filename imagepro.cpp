@@ -177,9 +177,9 @@ QImage *ImagePro::gaussian_blur()
                         continue;
                     }
                     rgb = src->pixel(col+j-TEMPLATE_SIZE/2,row+i-TEMPLATE_SIZE/2);
-                    t_red += gaussianTemplate[i][j] * qRed(rgb);
-                    t_green += gaussianTemplate[i][j] * qGreen(rgb);
-                    t_blue += gaussianTemplate[i][j] * qBlue(rgb);
+                    t_red += static_cast<unsigned int>(gaussianTemplate[i][j] * qRed(rgb));
+                    t_green += static_cast<unsigned int>(gaussianTemplate[i][j] * qGreen(rgb));
+                    t_blue += static_cast<unsigned int>(gaussianTemplate[i][j] * qBlue(rgb));
                 }
             }
             dst->setPixel(col,row,qRgb(t_red,t_green,t_blue));
