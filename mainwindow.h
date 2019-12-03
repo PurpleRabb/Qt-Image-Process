@@ -17,7 +17,6 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     void createDockWidget();
-    void paintEvent(QPaintEvent *event);
 
 private slots:
     void on_actionOpen_Image_triggered();
@@ -43,6 +42,8 @@ private slots:
     void on_actionswitch_triggered();
 
     void on_actionmid_triggered();
+
+    void on_actionsquare_mask_triggered();
 
 private:
     void createBarView(double *serial,int size);

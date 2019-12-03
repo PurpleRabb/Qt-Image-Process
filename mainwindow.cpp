@@ -54,11 +54,6 @@ MainWindow::~MainWindow()
     qDebug() << "~MainWindow";
 }
 
-void MainWindow::paintEvent(QPaintEvent *event)
-{
-
-}
-
 void MainWindow::createDockWidget()
 {
     srcWidget = new SrcImageWidget(this);
@@ -186,7 +181,14 @@ void MainWindow::on_actionmid_triggered()
      ImagePro::Instance()->doProcess(MED_FILTER);
 }
 
+
+void MainWindow::on_actionsquare_mask_triggered()
+{
+    ImagePro::Instance()->doProcess(SQUARE_MASK);
+}
+
 void MainWindow::on_actionswitch_triggered()
 {
     ImagePro::Instance()->swap();
 }
+

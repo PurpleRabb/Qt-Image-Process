@@ -39,6 +39,7 @@
     <addaction name="actionHistogram_Equalization"/>
     <addaction name="actionGua"/>
     <addaction name="actionmid"/>
+    <addaction name="actionsquare_mask"/>
    </widget>
    <widget class="QMenu" name="menu">
     <property name="title">
@@ -148,6 +149,11 @@
   <action name="actionmid">
    <property name="text">
     <string>中值滤波</string>
+   </property>
+  </action>
+  <action name="actionsquare_mask">
+   <property name="text">
+    <string>马赛克化</string>
    </property>
   </action>
  </widget>

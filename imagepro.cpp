@@ -77,6 +77,9 @@ QImage *ImagePro::doProcess(Task t,bool flag,int value)
     case MED_FILTER:
         med_filter();
         break;
+    case SQUARE_MASK:
+        square_mask();
+        break;
     }
     return dst;
 }
@@ -514,6 +517,54 @@ QImage* ImagePro::med_filter()
                 }
             }
             dst->setPixel(col,row,num9_temp[mid]);//取中间值
+        }
+    }
+    emit showDst(dst);
+    return dst;
+}
+
+QImage* ImagePro::square_mask()
+{
+    //用平均值将图片马赛克化
+    if(src == nullptr)
+        return nullptr;
+    int width = src->width();
+    int height = src->height();
+    int TEMPLATE_SIZE = 9; //以9*9的模板马赛克化
+    int total_num = TEMPLATE_SIZE * TEMPLATE_SIZE;
+    for(int row=TEMPLATE_SIZE/2;row<height;row+=TEMPLATE_SIZE/2)
+    {
+        for(int col=TEMPLATE_SIZE/2;col<width;col+=TEMPLATE_SIZE/2)
+        {
+            int totalBlue = 0;
+            int totalGreen = 0;
+            int totalRed = 0;
+            for(int i=0;i<TEMPLATE_SIZE;i++)
+            {
+                for(int j=0;j<TEMPLATE_SIZE;j++)
+                {
+                    if(((col+j-TEMPLATE_SIZE/2)>=width) || ((row+i-TEMPLATE_SIZE/2) >= height))
+                    {
+                        continue;
+                    }
+                    QRgb rgb = src->pixel(col+j-TEMPLATE_SIZE/2,row+i-TEMPLATE_SIZE/2);
+                    totalRed += qRed(rgb);
+                    totalBlue += qBlue(rgb);
+                    totalGreen += qGreen(rgb);
+                }
+            }
+            QRgb average = qRgb(totalRed/total_num,totalGreen/total_num,totalBlue/total_num);
+            for(int i=0;i<TEMPLATE_SIZE;i++)
+            {
+                for(int j=0;j<TEMPLATE_SIZE;j++)
+                {
+                    if(((col+j-TEMPLATE_SIZE/2)>=width) || ((row+i-TEMPLATE_SIZE/2) >= height))
+                    {
+                        continue;
+                    }
+                    dst->setPixel(col+j-TEMPLATE_SIZE/2,row+i-TEMPLATE_SIZE/2,average);
+                }
+            }
         }
     }
     emit showDst(dst);

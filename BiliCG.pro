@@ -17,6 +17,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     dstimagewidget.cpp \
+    fouriertransform.cpp \
     imagepro.cpp \
     m_dialog.cpp \
     main.cpp \
@@ -25,6 +26,7 @@ SOURCES += \
 
 HEADERS += \
     dstimagewidget.h \
+    fouriertransform.h \
     imagepro.h \
     m_dialog.h \
     mainwindow.h \
