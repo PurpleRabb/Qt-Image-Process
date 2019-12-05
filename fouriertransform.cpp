@@ -39,6 +39,7 @@ void FourierTransform::dft(QImage *image,QImage *dst)
     int width = image->width();
     int height = image->height();
     double real,im,exp;
+    double to_center = 0; //中心化频谱
     for(int u=0;u<width;u++)
     {
         for(int v=0;v<height;v++)
@@ -50,8 +51,9 @@ void FourierTransform::dft(QImage *image,QImage *dst)
                 for(int y=0;y<height;y++)
                 {
                     exp = -2.0*M_PI*((double)u*x/(double)width + (double)v*y/(double)height);
-                    real += image->pixel(x,y) * qCos(exp);
-                    im += image->pixel(x,y) * qSin(exp);
+                    to_center = (x + y) % 2 == 0 ? 1 : -1;
+                    real += image->pixel(x,y) * to_center * qCos(exp);
+                    im += image->pixel(x,y) * to_center * qSin(exp);
                 }
             }
             real_array[u][v] = real/(width * height);
