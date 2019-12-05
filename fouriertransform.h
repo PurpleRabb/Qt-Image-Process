@@ -11,6 +11,7 @@ public:
     explicit FourierTransform(QObject *parent = nullptr,QImage *image = nullptr);
     ~FourierTransform();
     void dft(QImage *image,QImage *dst);
+    void inv_dft(QImage *dst);//逆变换
 
 signals:
 

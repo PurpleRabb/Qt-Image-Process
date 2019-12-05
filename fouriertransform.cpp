@@ -51,13 +51,14 @@ void FourierTransform::dft(QImage *image,QImage *dst)
                 for(int y=0;y<height;y++)
                 {
                     exp = -2.0*M_PI*((double)u*x/(double)width + (double)v*y/(double)height);
-                    to_center = (x + y) % 2 == 0 ? 1 : -1;
+                    //to_center = (x + y) % 2 == 0 ? 1 : -1;
+                    to_center = 1;
                     real += image->pixel(x,y) * to_center * qCos(exp);
                     im += image->pixel(x,y) * to_center * qSin(exp);
                 }
             }
-            real_array[u][v] = real/(width * height);
-            im_array[u][v] = im/(width * height);
+            real_array[u][v] = real;
+            im_array[u][v] = im;
         }
     }
 
@@ -66,8 +67,35 @@ void FourierTransform::dft(QImage *image,QImage *dst)
         for(int v=0;v<height;v++)
         {
             double res = sqrt(real_array[u][v] * real_array[u][v] + im_array[u][v] * im_array[u][v]);
-            res = res/256.0;
+            res = res/256.0/(width*height);
             dst->setPixel(u,v,qRgb(static_cast<int>(res),static_cast<int>(res),static_cast<int>(res)));
+        }
+    }
+    inv_dft(dst);
+}
+
+
+void FourierTransform::inv_dft(QImage *dst)
+{
+    //反傅里叶变换
+    //f(x,y) = 1/sqt(MN) sum(0,M-1)sum(0,N-1)F(u,v)e^[j*2*PI(ux/M+vy/N)]
+    double real,temp;
+    for(int u=0;u<width;u++)
+    {
+        for(int v=0;v<height;v++)
+        {
+            for(int x=0;x<width;x++)
+            {
+                for(int y=0;y<height;y++)
+                {
+                    temp = (double)u*x/(double)width +
+                           (double)v*y/(double)height;
+                    real += real_array[x][y] * qCos(2*M_PI*temp) -
+                            im_array[x][y] * qSin(2*M_PI*temp);
+                }
+            }
+            qDebug() << (uint)(real / sqrt(width*height));
+            dst->setPixel(u,v,(uint)(real / sqrt(width*height)));
         }
     }
 }
