@@ -80,6 +80,9 @@ QImage *ImagePro::doProcess(Task t,bool flag,int value)
     case SQUARE_MASK:
         square_mask();
         break;
+    case FOURIER:
+        fourier();
+        break;
     }
     return dst;
 }
@@ -569,6 +572,13 @@ QImage* ImagePro::square_mask()
     }
     emit showDst(dst);
     return dst;
+}
+
+void ImagePro::fourier()
+{
+    FourierTransform ft(this,src);
+    ft.dft(src,dst);
+    emit showDst(dst);
 }
 
 void ImagePro::swap()

@@ -45,6 +45,8 @@ private slots:
 
     void on_actionsquare_mask_triggered();
 
+    void on_actionFourier_triggered();
+
 private:
     void createBarView(double *serial,int size);
 

@@ -187,8 +187,13 @@ void MainWindow::on_actionsquare_mask_triggered()
     ImagePro::Instance()->doProcess(SQUARE_MASK);
 }
 
+
+void MainWindow::on_actionFourier_triggered()
+{
+    ImagePro::Instance()->doProcess(FOURIER);
+}
+
 void MainWindow::on_actionswitch_triggered()
 {
     ImagePro::Instance()->swap();
 }
-

@@ -40,6 +40,7 @@
     <addaction name="actionGua"/>
     <addaction name="actionmid"/>
     <addaction name="actionsquare_mask"/>
+    <addaction name="actionFourier"/>
    </widget>
    <widget class="QMenu" name="menu">
     <property name="title">
@@ -154,6 +155,11 @@
   <action name="actionsquare_mask">
    <property name="text">
     <string>马赛克化</string>
+   </property>
+  </action>
+  <action name="actionFourier">
+   <property name="text">
+    <string>Fourier</string>
    </property>
   </action>
  </widget>

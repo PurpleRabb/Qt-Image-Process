@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QImage>
 #include <QImage>
+#include "fouriertransform.h"
 
 class ImagePro;
 
@@ -18,7 +19,8 @@ enum Task {
     DUAL_SHARPEN,
     SOBEL,
     MED_FILTER,
-    SQUARE_MASK
+    SQUARE_MASK,
+    FOURIER,
 };
 
 class ImagePro : public QObject
@@ -56,7 +58,7 @@ private:
     QImage* dual_sharpen();
     QImage* med_filter();
     QImage* square_mask();
-
+    void fourier();
 
 public slots:
 
